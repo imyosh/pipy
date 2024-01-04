@@ -76,7 +76,8 @@ export default function HeaderMenu() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+
             <Button
               disabled={isPending}
               onClick={() => {

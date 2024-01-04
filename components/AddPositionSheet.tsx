@@ -87,6 +87,7 @@ export default function AddPositionSheet({
         });
       }
       setOpen(false);
+      form.reset();
     });
   }
 
