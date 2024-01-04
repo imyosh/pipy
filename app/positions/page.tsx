@@ -9,7 +9,7 @@ export default async function Positions() {
   const posisitons = await apiGetUserPositions();
 
   return (
-    <main className="flex overflow-hidden flex-grow flex-col gap-6">
+    <main className="flex overflow-hidden flex-1 flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1>Posistions</h1>
 

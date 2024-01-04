@@ -47,7 +47,11 @@ export default function HeaderMenu() {
             <MenuIcon className="hover:fill-primary-2 w-8 h-8 fill-secondary-foreground" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent hidden={logoutAlertOpen}>
+        <DropdownMenuContent
+          hidden={logoutAlertOpen}
+          side="bottom"
+          className="ml-4"
+        >
           <DropdownMenuItem
             onSelect={() => setLogoutAlertOpen(true)}
             className="group group flex w-full items-center gap-2"

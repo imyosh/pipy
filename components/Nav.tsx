@@ -16,7 +16,7 @@ export default function Nav() {
   if (pathName === "/login") return null;
 
   return (
-    <nav className="mt-6 flex items-center gap-8 justify-center">
+    <nav className="mt-4 flex items-center gap-8 justify-center">
       <Link href="/" className="group cursor-pointer">
         <DashboardIcon
           data-active={pathName === "/"}

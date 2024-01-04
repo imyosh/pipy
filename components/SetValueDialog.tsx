@@ -84,7 +84,10 @@ export default function SetValueDialog({
         setOpen(isOpen);
       }}
     >
-      <DialogContent className="gap-6">
+      <DialogContent
+        className="gap-6"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="w-max">
             Update {target.title === "mine" ? "My" : "Invistor"} Value
@@ -96,6 +99,7 @@ export default function SetValueDialog({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* <span tabIndex={0} /> */}
             <FormField
               control={form.control}
               name="value"

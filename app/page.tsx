@@ -11,7 +11,7 @@ export default async function Home() {
   if (!session) redirect("/login");
 
   return (
-    <main className="flex flex-grow flex-col gap-6">
+    <main className="flex flex-1 flex-col gap-6">
       <Suspense fallback={<PortfolioCardsSkeleton />}>
         <PortfolioCards session={session} />
       </Suspense>

@@ -10,7 +10,7 @@ export default async function Header() {
   if (!session) return null;
 
   return (
-    <div className="flex mb-3 items-center justify-between">
+    <div className="flex mb-4 items-center justify-between">
       <HeaderMenu />
 
       <h1 className="tracking-[5px]">PIPY</h1>
