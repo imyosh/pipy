@@ -8,7 +8,7 @@ export default async function page() {
   if (session) redirect("/");
 
   return (
-    <main className="flex flex-grow justify-center items-center flex-col gap-6">
+    <main className="flex login-background -mx-4 -mb-6 flex-grow justify-center items-center flex-col gap-6">
       <h1 className="text-xl border tracking-[1px] p-4 rounded-full w-20 h-20 flex items-center justify-center">
         PIPY
       </h1>
