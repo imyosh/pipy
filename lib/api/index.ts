@@ -1,9 +1,10 @@
 "use server";
 
-import { Portfolio, Position } from "@/types";
+import { IdPosition, Portfolio, Position } from "@/types";
 import {
   addNewPosition,
   clearPositionsHistory,
+  deletePosition,
   getUserPortfolio,
   getUserPositions,
   getUserRecentPositions,
@@ -38,7 +39,7 @@ export async function apiGetUserRecentPositions() {
 export async function apiAddNewPosition(position: Position) {
   const session = await getUserSession();
 
-  const interest = 0.2;
+  // const interest = 0.2;
   const portfolio = await getUserPortfolio(session.id);
 
   if (!portfolio) return;
@@ -51,18 +52,36 @@ export async function apiAddNewPosition(position: Position) {
   let myValue = myPercent * position.value;
   let invistorValue = invistorPercent * position.value;
 
-  if (position.value > 0) {
-    const interestValue = interest * invistorValue;
+  // if (position.value > 0) {
+  //   const interestValue = interest * invistorValue;
 
-    myValue = myValue + interestValue;
-    invistorValue = invistorValue - interestValue;
-  }
+  //   myValue = myValue + interestValue;
+  //   invistorValue = invistorValue - interestValue;
+  // }
 
   await updateUserPortfolioByPosition(session.id, {
     mine: myValue,
     invistor: invistorValue,
   });
-  await addNewPosition(session.id, position);
+  await addNewPosition(session.id, {
+    ...position,
+    shares: {
+      myValue,
+      invistorValue,
+    },
+  });
+  revalidatePath("/");
+}
+
+export async function apiDeletePosition(position: IdPosition) {
+  const session = await getUserSession();
+
+  await updateUserPortfolioByPosition(session.id, {
+    mine: -position.shares.myValue,
+    invistor: -position.shares.invistorValue,
+  });
+
+  await deletePosition(session.id, position);
   revalidatePath("/");
 }
 

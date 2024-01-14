@@ -24,7 +24,7 @@ export default async function Positions() {
         </ClearHistoryDialog>
       </div>
 
-      <div className="overflow-y-auto pr-2 relative flex-col space-y-4">
+      <div className="overflow-y-auto overflow-x-hidden pr-2 relative flex-col space-y-4">
         {posisitons?.length !== 0 ? (
           posisitons?.map((position) => (
             <Position key={position.id} position={position} />

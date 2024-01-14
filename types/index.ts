@@ -1,19 +1,23 @@
 export type Portfolio = {
-  mine: number
-  invistor: number
-}
+  mine: number;
+  invistor: number;
+};
 
 export type Position = {
-  value: number
-  lot: number
-  currencyPair: string
-}
+  value: number;
+  lot: number;
+  currencyPair: string;
+};
 
-export type IdPosition = Position & {
-  id: string
-}
+export type DbPosition = Position & {
+  shares: { [key: string]: number };
+};
+
+export type IdPosition = DbPosition & {
+  id: string;
+};
 
 export type ValueShareType = {
-  title: string
-  value: number
-}
+  title: string;
+  value: number;
+};

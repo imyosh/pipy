@@ -76,3 +76,16 @@
   background: hsl(var(--primary));
   background-position: center;
 }
+
+/* /////////////////////////////// */
+
+.rstra-content-container {
+  background-color: transparent !important;
+}
+
+.rstra-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  height: min-content;
+}

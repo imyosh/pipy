@@ -8,13 +8,14 @@ import {
   getDocs,
   collection,
   addDoc,
+  deleteDoc,
   serverTimestamp,
   increment,
   writeBatch,
   runTransaction,
 } from "firebase/firestore";
 
-import { IdPosition, Portfolio, Position } from "@/types";
+import { DbPosition, IdPosition, Portfolio, Position } from "@/types";
 
 import { db } from ".";
 
@@ -72,13 +73,17 @@ export const getUserRecentPositions = async (userId: string) => {
     .reverse() as IdPosition[];
 };
 
-export const addNewPosition = async (userId: string, position: Position) => {
+export const addNewPosition = async (userId: string, position: DbPosition) => {
   const positionsRef = collection(db, "users", userId, "positions");
-
   return addDoc(positionsRef, {
     ...position,
     timestamp: serverTimestamp(),
   });
+};
+
+export const deletePosition = async (userId: string, position: IdPosition) => {
+  const positionRef = doc(db, "users", userId, "positions", position.id);
+  return deleteDoc(positionRef);
 };
 
 export const clearPositionsHistory = async (userId: string) => {
