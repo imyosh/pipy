@@ -101,5 +101,28 @@ export async function apiTransferPercentage(baseBalance: number) {
     mine: transferable,
     invistor: -transferable,
   });
+
+  const updatedPortfolio = await getUserPortfolio(session.id);
+
+  await updateUserPortfolio(
+    session.id,
+    "recentInvistorBaseBalance",
+    updatedPortfolio.invistor
+  );
+
+  revalidatePath("/");
+}
+
+export async function apiResetInvistorBalance() {
+  const session = await getUserSession();
+
+  const updatedPortfolio = await getUserPortfolio(session.id);
+
+  await updateUserPortfolio(
+    session.id,
+    "recentInvistorBaseBalance",
+    updatedPortfolio.invistor
+  );
+
   revalidatePath("/");
 }

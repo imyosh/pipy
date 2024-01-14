@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Loader from "./Loader";
 import { Input } from "./ui/input";
-import { apiTransferPercentage } from "@/lib/api";
+import { apiResetInvistorBalance, apiTransferPercentage } from "@/lib/api";
 
 import {
   AlertDialog,
@@ -46,6 +46,9 @@ export default function TransferPercentageDialog({
 }: TransferPercentageDialogProps) {
   const [isPending, startTransition] = useTransition();
 
+  const isInLoss =
+    portfolio.invistor < (portfolio.recentInvistorBaseBalance ?? 0);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -60,9 +63,20 @@ export default function TransferPercentageDialog({
     });
   }
 
+  function resetBaseBalance() {
+    startTransition(async () => {
+      await apiResetInvistorBalance();
+      setOpen(false);
+    });
+  }
+
   useEffect(() => {
-    if (open && form) form.reset();
-  }, [form, open]);
+    if (open && form)
+      form.setValue(
+        "value",
+        Number(portfolio.recentInvistorBaseBalance?.toFixed(2))
+      );
+  }, [portfolio, form, open]);
 
   return (
     <AlertDialog
@@ -87,7 +101,6 @@ export default function TransferPercentageDialog({
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* <span tabIndex={0} /> */}
             <FormField
               control={form.control}
               name="value"
@@ -96,7 +109,7 @@ export default function TransferPercentageDialog({
                 <FormItem>
                   <FormControl>
                     <Input
-                      max={portfolio.invistor - 0.01}
+                      max={Number(portfolio.invistor.toFixed(2)) - 0.01}
                       type="number"
                       placeholder="base balance"
                       {...field}
@@ -110,9 +123,19 @@ export default function TransferPercentageDialog({
                 Cancel
               </AlertDialogCancel>
 
-              <Button disabled={isPending} type="submit">
+              {isInLoss && (
+                <Button
+                  variant="outline"
+                  onClick={() => resetBaseBalance()}
+                  className="mt-2"
+                >
+                  Reset base balance
+                  <Loader isLoading={isPending} />
+                </Button>
+              )}
+              <Button disabled={isPending || isInLoss} type="submit">
                 Transfer
-                <Loader isLoading={isPending} />
+                {!isInLoss && <Loader isLoading={isPending} />}
               </Button>
             </AlertDialogFooter>
           </form>

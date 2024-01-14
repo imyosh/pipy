@@ -66,7 +66,7 @@ export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
           </DropdownMenuItem>
 
           <DropdownMenuItem
-            disabled={portfolio.invistor < 0.01}
+            disabled={!portfolio.invistor || portfolio.invistor < 0.01}
             onSelect={() => setTransferAlertOpen(true)}
             className="group group flex w-full items-center gap-2"
           >

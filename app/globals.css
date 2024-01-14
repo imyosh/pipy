@@ -86,6 +86,6 @@
 .rstra-action-button {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   height: min-content;
 }

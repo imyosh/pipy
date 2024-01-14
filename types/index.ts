@@ -1,6 +1,7 @@
 export type Portfolio = {
   mine: number;
   invistor: number;
+  recentInvistorBaseBalance?: number;
 };
 
 export type Position = {
