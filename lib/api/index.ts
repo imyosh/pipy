@@ -90,3 +90,16 @@ export async function apiClearPositionsHistory() {
   await clearPositionsHistory(session.id);
   revalidatePath("/");
 }
+
+export async function apiTransferPercentage() {
+  const session = await getUserSession();
+  const portfolio = await getUserPortfolio(session.id);
+
+  const transferable = portfolio.invistor * 0.2;
+
+  await updateUserPortfolioByPosition(session.id, {
+    mine: transferable,
+    invistor: -transferable,
+  });
+  revalidatePath("/");
+}

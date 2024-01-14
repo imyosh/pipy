@@ -27,15 +27,26 @@ import Loader from "./Loader";
 import { signOut } from "next-auth/react";
 
 import SignoutIcon from "@/public/svg/signout.svg";
+import ExchangeIcon from "@/public/svg/exchange.svg";
+
+import { apiTransferPercentage } from "@/lib/api";
 
 export default function HeaderMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutAlertOpen, setLogoutAlertOpen] = useState(false);
+  const [transferAlertOpen, setTransferAlertOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function logout() {
     startTransition(async () => {
       await signOut();
+    });
+  }
+
+  function transferPercentage() {
+    startTransition(async () => {
+      await apiTransferPercentage();
+      setTransferAlertOpen(false);
     });
   }
 
@@ -58,6 +69,14 @@ export default function HeaderMenu() {
           >
             <SignoutIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
             Logout
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            onSelect={() => setTransferAlertOpen(true)}
+            className="group group flex w-full items-center gap-2"
+          >
+            <ExchangeIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
+            Transfer percentage
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -86,6 +105,37 @@ export default function HeaderMenu() {
               variant="destructive"
             >
               Logout
+              <Loader isLoading={isPending} />
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={transferAlertOpen}
+        onOpenChange={(isOpen) => {
+          if (isPending) return;
+          setTransferAlertOpen(isOpen);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will Transfer{" "}
+              <span className="text-green-400">20%</span> to your balance from
+              the invistor!
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
+            <Button
+              disabled={isPending}
+              onClick={() => {
+                transferPercentage();
+              }}
+            >
+              Transfer
               <Loader isLoading={isPending} />
             </Button>
           </AlertDialogFooter>
