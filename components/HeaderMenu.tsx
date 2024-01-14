@@ -29,9 +29,10 @@ import { signOut } from "next-auth/react";
 import SignoutIcon from "@/public/svg/signout.svg";
 import ExchangeIcon from "@/public/svg/exchange.svg";
 
-import { apiTransferPercentage } from "@/lib/api";
+import TransferPercentageDialog from "./TransferPercentageDialog";
+import { Portfolio } from "@/types";
 
-export default function HeaderMenu() {
+export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutAlertOpen, setLogoutAlertOpen] = useState(false);
   const [transferAlertOpen, setTransferAlertOpen] = useState(false);
@@ -40,13 +41,6 @@ export default function HeaderMenu() {
   function logout() {
     startTransition(async () => {
       await signOut();
-    });
-  }
-
-  function transferPercentage() {
-    startTransition(async () => {
-      await apiTransferPercentage();
-      setTransferAlertOpen(false);
     });
   }
 
@@ -72,6 +66,7 @@ export default function HeaderMenu() {
           </DropdownMenuItem>
 
           <DropdownMenuItem
+            disabled={portfolio.invistor < 0.01}
             onSelect={() => setTransferAlertOpen(true)}
             className="group group flex w-full items-center gap-2"
           >
@@ -111,36 +106,11 @@ export default function HeaderMenu() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <AlertDialog
+      <TransferPercentageDialog
         open={transferAlertOpen}
-        onOpenChange={(isOpen) => {
-          if (isPending) return;
-          setTransferAlertOpen(isOpen);
-        }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will Transfer{" "}
-              <span className="text-green-400">20%</span> to your balance from
-              the invistor!
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-            <Button
-              disabled={isPending}
-              onClick={() => {
-                transferPercentage();
-              }}
-            >
-              Transfer
-              <Loader isLoading={isPending} />
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        setOpen={setTransferAlertOpen}
+        portfolio={portfolio}
+      />
     </div>
   );
 }

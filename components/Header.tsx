@@ -3,15 +3,18 @@ import Image from "next/image";
 import UserIcon from "@/public/svg/user.svg";
 import HeaderMenu from "./HeaderMenu";
 import { getUserSession } from "@/lib/session";
+import { apiGetUserPortfolio } from "@/lib/api";
 
 export default async function Header() {
   const session = await getUserSession();
 
   if (!session) return null;
 
+  const Portfolio = await apiGetUserPortfolio();
+
   return (
     <div className="flex mb-4 items-center justify-between">
-      <HeaderMenu />
+      <HeaderMenu portfolio={Portfolio} />
 
       <h1 className="tracking-[5px]">PIPY</h1>
       {session?.image ? (
