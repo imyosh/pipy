@@ -41,7 +41,7 @@ const FOREXPAIRS = [
 ];
 
 const FormSchema = z.object({
-  value: z.coerce.number().min(0.1).default(0),
+  value: z.coerce.number().min(0.01).default(0),
   currencyPair: z.string().optional().default(""),
   lot: z.coerce
     .number()
