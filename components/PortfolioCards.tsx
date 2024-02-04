@@ -53,10 +53,10 @@ export function PortfolioCardsSkeleton() {
         </h2>
         <Skeleton className=" h-[49px] w-[200px]" />
       </div>
-      {/* <div className='w-full h-28 border-t-2 border-primary bg-gradient-to-b from-[#1B2943] to-background'></div> */}
+      <Skeleton className="h-[90px] flex-grow rounded-xl  p-4" />
       <div className="flex w-full gap-2">
-        <Skeleton className="h-[90px] flex-grow rounded-xl  p-4" />
         <Skeleton className="h-[90px] flex-grow rounded-xl  p-4 delay-150" />
+        <Skeleton className="h-[90px] flex-grow rounded-xl  p-4 delay-300" />
       </div>
     </div>
   );

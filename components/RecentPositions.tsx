@@ -10,7 +10,7 @@ export default async function RecentPositions() {
       <div className="flex items-center justify-between">
         <h1>Posistions</h1>
       </div>
-      {/* <div className="flex-grow flex relative flex-col gap-4">
+      <div className="flex-grow flex relative flex-col gap-4">
         {positions?.length !== 0 ? (
           positions?.map((position) => (
             <Position key={position.id} position={position} />
@@ -20,7 +20,7 @@ export default async function RecentPositions() {
             Start adding positions!
           </p>
         )}
-      </div> */}
+      </div>
     </section>
   );
 }

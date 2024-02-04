@@ -19,9 +19,9 @@ export default function Position({ position }: { position: IdPosition }) {
         {
           content: (
             <DeletePositionAlertDialog position={position}>
-              <Button variant="outline" size="icon">
+              <div className="inline-flex items-center justify-center rounded-md text-sm whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border h-8 w-8 min-w-[2rem] border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground">
                 <DeleteIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
-              </Button>
+              </div>
             </DeletePositionAlertDialog>
           ),
           onClick: () => {},
