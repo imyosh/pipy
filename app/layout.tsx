@@ -23,21 +23,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={cn(
-          inter.className,
-          "sm:hidden flex flex-col px-4 pb-6 pt-2"
-        )}
-      >
-        <Header />
-        {children}
-        <Nav />
-        <Toaster />
-      </body>
+      <body className={cn(inter.className)}>
+        <div className="sm:hidden h-full flex flex-col px-4 pb-6 pt-2">
+          <Header />
+          {children}
+          <Nav />
+          <Toaster />
+        </div>
 
-      <p className="sm:flex text-2xl text-foreground justify-center items-center bg-background h-full w-full hidden">
-        Desktop Is Not Supported.
-      </p>
+        <p className="sm:flex text-2xl text-foreground justify-center items-center bg-background h-full w-full hidden">
+          Desktop Is Not Supported.
+        </p>
+      </body>
     </html>
   );
 }

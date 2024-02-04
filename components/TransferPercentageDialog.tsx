@@ -1,13 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
 import { useEffect, useTransition } from "react";
 
@@ -27,7 +20,7 @@ import {
   AlertDialogTitle,
   AlertDialogFooter,
 } from "./ui/alert-dialog";
-import { Portfolio } from "@/types";
+import { Portfolio, ValueShareType } from "@/types";
 
 const FormSchema = z.object({
   value: z.coerce.number(),
@@ -36,19 +29,19 @@ const FormSchema = z.object({
 type TransferPercentageDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  portfolio: Portfolio;
+  target: ValueShareType;
 };
 
 export default function TransferPercentageDialog({
   open,
   setOpen,
-  portfolio,
+  target,
 }: TransferPercentageDialogProps) {
   const [isPending, startTransition] = useTransition();
 
-  const isInLoss =
-    portfolio.invistor < (portfolio.recentInvistorBaseBalance ?? 0);
+  const isInLoss = target.value < (target.recentInvistorBaseBalance ?? 0);
 
+  target.title, target.value, target.recentInvistorBaseBalance;
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,14 +51,14 @@ export default function TransferPercentageDialog({
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
-      await apiTransferPercentage(data.value);
+      await apiTransferPercentage(data.value, target.handler);
       setOpen(false);
     });
   }
 
   function resetBaseBalance() {
     startTransition(async () => {
-      await apiResetInvistorBalance();
+      await apiResetInvistorBalance(target.handler);
       setOpen(false);
     });
   }
@@ -74,9 +67,9 @@ export default function TransferPercentageDialog({
     if (open && form)
       form.setValue(
         "value",
-        Number(portfolio.recentInvistorBaseBalance?.toFixed(2))
+        Number(target.recentInvistorBaseBalance?.toFixed(2))
       );
-  }, [portfolio, form, open]);
+  }, [target, form, open]);
 
   return (
     <AlertDialog
@@ -94,8 +87,8 @@ export default function TransferPercentageDialog({
           <AlertDialogTitle className="w-max">Are you sure? </AlertDialogTitle>
           <AlertDialogDescription className="text-start">
             This action cannot be undone. This will Transfer{" "}
-            <span className="text-green-400">20%</span> to your balance from the
-            invistor!
+            <span className="text-green-400">20%</span> to your balance from{" "}
+            {target.title}!
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -109,7 +102,7 @@ export default function TransferPercentageDialog({
                 <FormItem>
                   <FormControl>
                     <Input
-                      max={Number(portfolio.invistor.toFixed(2)) - 0.01}
+                      max={Number(target.value.toFixed(2)) - 0.01}
                       type="number"
                       placeholder="base balance"
                       {...field}
@@ -133,6 +126,7 @@ export default function TransferPercentageDialog({
                   <Loader isLoading={isPending} />
                 </Button>
               )}
+
               <Button disabled={isPending || isInLoss} type="submit">
                 Transfer
                 {!isInLoss && <Loader isLoading={isPending} />}

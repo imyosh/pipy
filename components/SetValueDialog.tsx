@@ -59,7 +59,7 @@ export default function SetValueDialog({
   function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
       try {
-        await apiUpdateUserPortfolio(target.title, data.value);
+        await apiUpdateUserPortfolio(target.handler, data.value);
       } catch (err) {
         console.log(err);
         toast({

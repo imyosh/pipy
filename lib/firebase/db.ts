@@ -15,7 +15,7 @@ import {
   runTransaction,
 } from "firebase/firestore";
 
-import { DbPosition, IdPosition, Portfolio, Position } from "@/types";
+import { DbPosition, IdPosition, InvistorHandler, Portfolio } from "@/types";
 
 import { db } from ".";
 
@@ -45,7 +45,19 @@ export const updateUserPortfolioByPosition = async (
   const portfolioRef = doc(db, "users", userId);
   return updateDoc(portfolioRef, {
     mine: increment(portfolio.mine),
-    invistor: increment(portfolio.invistor),
+    invistor1: increment(portfolio.invistor1),
+    invistor2: increment(portfolio.invistor2),
+  });
+};
+
+export const updateUserTargetPortfolioByPosition = async (
+  userId: string,
+  update: { value: number; handler: InvistorHandler }
+) => {
+  const portfolioRef = doc(db, "users", userId);
+  return updateDoc(portfolioRef, {
+    mine: increment(update.value),
+    [update.handler]: increment(-update.value),
   });
 };
 
@@ -63,7 +75,7 @@ export const getUserPositions = async (userId: string) => {
 
 export const getUserRecentPositions = async (userId: string) => {
   const positionsRef = collection(db, "users", userId, "positions");
-  const q = query(positionsRef, orderBy("timestamp"), limitToLast(3));
+  const q = query(positionsRef, orderBy("timestamp"), limitToLast(2));
   const userPositions = await getDocs(q);
   return userPositions.docs
     .map((doc) => ({
@@ -103,8 +115,9 @@ export async function upsertUser(userId: string) {
     const sfDoc = await transaction.get(userRef);
     if (!sfDoc.exists())
       transaction.set(userRef, {
-        invistor: 0,
         mine: 0,
+        invistor1: 0,
+        invistor2: 0,
       });
   });
 }

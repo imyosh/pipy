@@ -31,6 +31,8 @@ import Loader from "./Loader";
 import { apiUpdateUserPortfolio } from "@/lib/api";
 import { ValueShareType } from "@/types";
 import { useToast } from "./ui/use-toast";
+import TransferPercentageDialog from "./TransferPercentageDialog";
+import ExchangeIcon from "@/public/svg/exchange.svg";
 
 export default function ValueShareOptions({
   target,
@@ -40,6 +42,7 @@ export default function ValueShareOptions({
   const [menuOpen, setMenuOpen] = useState(false);
   const [clearAlertOpen, setClearAlertOpen] = useState(false);
   const [changeDialogOpen, setChangeDialogOpen] = useState(false);
+  const [transferAlertOpen, setTransferAlertOpen] = useState(false);
 
   const [isPending, startTransition] = useTransition();
 
@@ -48,7 +51,7 @@ export default function ValueShareOptions({
   function clearValue() {
     startTransition(async () => {
       try {
-        await apiUpdateUserPortfolio(target.title, 0);
+        await apiUpdateUserPortfolio(target.handler, 0);
       } catch (err) {
         console.log(err);
         toast({
@@ -85,6 +88,17 @@ export default function ValueShareOptions({
             <DeleteIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
             Clear
           </DropdownMenuItem>
+
+          {target.handler !== "mine" && (
+            <DropdownMenuItem
+              disabled={!target.value || target.value < 0.01}
+              onSelect={() => setTransferAlertOpen(true)}
+              className="group group flex w-full items-center gap-2"
+            >
+              <ExchangeIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
+              Transfer percentage
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertDialog
@@ -123,6 +137,12 @@ export default function ValueShareOptions({
       <SetValueDialog
         open={changeDialogOpen}
         setOpen={setChangeDialogOpen}
+        target={target}
+      />
+
+      <TransferPercentageDialog
+        open={transferAlertOpen}
+        setOpen={setTransferAlertOpen}
         target={target}
       />
     </>

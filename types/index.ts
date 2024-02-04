@@ -1,7 +1,9 @@
 export type Portfolio = {
   mine: number;
-  invistor: number;
-  recentInvistorBaseBalance?: number;
+  invistor1: number;
+  invistor2: number;
+  "invistor1-basebalance"?: number;
+  "invistor2-basebalance"?: number;
 };
 
 export type Position = {
@@ -18,7 +20,11 @@ export type IdPosition = DbPosition & {
   id: string;
 };
 
+export type InvistorHandler = "mine" | "invistor1" | "invistor2";
+
 export type ValueShareType = {
   title: string;
   value: number;
+  handler: InvistorHandler;
+  recentInvistorBaseBalance?: number;
 };

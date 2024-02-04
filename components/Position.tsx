@@ -11,35 +11,6 @@ import DeletePositionAlertDialog from "./DeletePositionAlertDialog";
 import DeleteIcon from "@/public/svg/delete.svg";
 
 export default function Position({ position }: { position: IdPosition }) {
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-
-  let handleTouchStart: TouchEventHandler = function (e) {
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  let handleTouchMove: TouchEventHandler = function (e) {
-    console.log(e.targetTouches);
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  let handleTouchEnd: TouchEventHandler = function () {
-    console.log("handleTouchEnd");
-    if (touchStart - touchEnd > 150) {
-      console.log("left swip");
-      // do your stuff here for left swipe
-    }
-
-    if (touchStart - touchEnd < -150) {
-      console.log("right swip");
-
-      // do your stuff here for right swipe
-    }
-
-    setTouchEnd(0);
-    setTouchStart(0);
-  };
-
   return (
     <SwipeToRevealActions
       hideDotsButton

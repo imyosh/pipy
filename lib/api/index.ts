@@ -1,6 +1,12 @@
 "use server";
 
-import { IdPosition, Portfolio, Position } from "@/types";
+import {
+  IdPosition,
+  InvistorHandler,
+  Portfolio,
+  Position,
+  ValueShareType,
+} from "@/types";
 import {
   addNewPosition,
   clearPositionsHistory,
@@ -10,6 +16,7 @@ import {
   getUserRecentPositions,
   updateUserPortfolio,
   updateUserPortfolioByPosition,
+  updateUserTargetPortfolioByPosition,
 } from "../firebase/db";
 
 import { revalidatePath } from "next/cache";
@@ -44,13 +51,15 @@ export async function apiAddNewPosition(position: Position) {
 
   if (!portfolio) return;
 
-  const total = portfolio.mine + portfolio.invistor;
+  const total = portfolio.mine + portfolio.invistor1 + portfolio.invistor2;
 
   const myPercent = portfolio.mine / total;
-  const invistorPercent = portfolio.invistor / total;
+  const invistor1Percent = portfolio.invistor1 / total;
+  const invistor2Percent = portfolio.invistor2 / total;
 
   let myValue = myPercent * position.value;
-  let invistorValue = invistorPercent * position.value;
+  let invistor1Value = invistor1Percent * position.value;
+  let invistor2Value = invistor2Percent * position.value;
 
   // if (position.value > 0) {
   //   const interestValue = interest * invistorValue;
@@ -61,13 +70,15 @@ export async function apiAddNewPosition(position: Position) {
 
   await updateUserPortfolioByPosition(session.id, {
     mine: myValue,
-    invistor: invistorValue,
+    invistor1: invistor1Value,
+    invistor2: invistor2Value,
   });
   await addNewPosition(session.id, {
     ...position,
     shares: {
       myValue,
-      invistorValue,
+      invistor1Value,
+      invistor2Value,
     },
   });
   revalidatePath("/");
@@ -78,7 +89,8 @@ export async function apiDeletePosition(position: IdPosition) {
 
   await updateUserPortfolioByPosition(session.id, {
     mine: -position.shares.myValue,
-    invistor: -position.shares.invistorValue,
+    invistor1: -position.shares.invistor1Value,
+    invistor2: -position.shares.invistor2Value,
   });
 
   await deletePosition(session.id, position);
@@ -91,37 +103,40 @@ export async function apiClearPositionsHistory() {
   revalidatePath("/");
 }
 
-export async function apiTransferPercentage(baseBalance: number) {
+export async function apiTransferPercentage(
+  baseBalance: number,
+  handler: InvistorHandler
+) {
   const session = await getUserSession();
   const portfolio = await getUserPortfolio(session.id);
 
-  const transferable = (portfolio.invistor - baseBalance) * 0.2;
+  const transferable1 = (portfolio[handler] - baseBalance) * 0.2;
 
-  await updateUserPortfolioByPosition(session.id, {
-    mine: transferable,
-    invistor: -transferable,
+  await updateUserTargetPortfolioByPosition(session.id, {
+    value: transferable1,
+    handler,
   });
 
   const updatedPortfolio = await getUserPortfolio(session.id);
 
   await updateUserPortfolio(
     session.id,
-    "recentInvistorBaseBalance",
-    updatedPortfolio.invistor
+    `${handler}-basebalance`,
+    updatedPortfolio[handler]
   );
 
   revalidatePath("/");
 }
 
-export async function apiResetInvistorBalance() {
+export async function apiResetInvistorBalance(handler: string) {
   const session = await getUserSession();
 
   const updatedPortfolio = await getUserPortfolio(session.id);
 
   await updateUserPortfolio(
     session.id,
-    "recentInvistorBaseBalance",
-    updatedPortfolio.invistor
+    `${handler}-basebalance`,
+    updatedPortfolio.invistor1
   );
 
   revalidatePath("/");

@@ -14,14 +14,30 @@ export default async function PortfolioCards({ session }: { session: User }) {
         </h2>
         <p className="text-5xl">
           <span className="text-2xl">$</span>
-          {((portfolio?.mine || 0) + (portfolio?.invistor || 0)).toFixed(1)}
+          {((portfolio?.mine || 0) + (portfolio?.invistor1 || 0)).toFixed(1)}
         </p>
       </div>
       {/* <div className='w-full h-28 border-t-2 border-primary bg-gradient-to-b from-[#1B2943] to-background'></div> */}
+      <ValueShare
+        share={{ title: "mine", value: portfolio?.mine || 0, handler: "mine" }}
+      />
+
       <div className="flex w-full gap-2">
-        <ValueShare share={{ title: "mine", value: portfolio?.mine || 0 }} />
         <ValueShare
-          share={{ title: "invistor", value: portfolio?.invistor || 0 }}
+          share={{
+            title: "invistor 1",
+            value: portfolio?.invistor1 || 0,
+            handler: "invistor1",
+            recentInvistorBaseBalance: portfolio["invistor1-basebalance"],
+          }}
+        />
+        <ValueShare
+          share={{
+            title: "invistor 2",
+            value: portfolio?.invistor2 || 0,
+            handler: "invistor2",
+            recentInvistorBaseBalance: portfolio["invistor2-basebalance"],
+          }}
         />
       </div>
     </div>

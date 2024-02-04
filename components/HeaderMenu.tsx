@@ -27,15 +27,12 @@ import Loader from "./Loader";
 import { signOut } from "next-auth/react";
 
 import SignoutIcon from "@/public/svg/signout.svg";
-import ExchangeIcon from "@/public/svg/exchange.svg";
 
-import TransferPercentageDialog from "./TransferPercentageDialog";
 import { Portfolio } from "@/types";
 
 export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoutAlertOpen, setLogoutAlertOpen] = useState(false);
-  const [transferAlertOpen, setTransferAlertOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   function logout() {
@@ -43,6 +40,8 @@ export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
       await signOut();
     });
   }
+
+  if (!portfolio) logout();
 
   return (
     <div className="flex flex-col items-center">
@@ -63,15 +62,6 @@ export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
           >
             <SignoutIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
             Logout
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            disabled={!portfolio.invistor || portfolio.invistor < 0.01}
-            onSelect={() => setTransferAlertOpen(true)}
-            className="group group flex w-full items-center gap-2"
-          >
-            <ExchangeIcon className="h-4 w-4 fill-[#90929D] transition group-hover:fill-[#fff]" />
-            Transfer percentage
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -105,12 +95,6 @@ export default function HeaderMenu({ portfolio }: { portfolio: Portfolio }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      <TransferPercentageDialog
-        open={transferAlertOpen}
-        setOpen={setTransferAlertOpen}
-        portfolio={portfolio}
-      />
     </div>
   );
 }

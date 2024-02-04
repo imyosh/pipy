@@ -10,11 +10,11 @@ export default async function Header() {
 
   if (!session) return null;
 
-  const Portfolio = await apiGetUserPortfolio();
+  const portfolio = await apiGetUserPortfolio();
 
   return (
     <div className="flex mb-4 items-center justify-between">
-      <HeaderMenu portfolio={Portfolio} />
+      <HeaderMenu portfolio={portfolio} />
 
       <h1 className="tracking-[5px]">PIPY</h1>
       {session?.image ? (
