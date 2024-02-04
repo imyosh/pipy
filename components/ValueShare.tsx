@@ -8,13 +8,13 @@ export default function ValueShare({ share }: { share: ValueShareType }) {
         {share.title}
       </h2>
       <ValueShareOptions target={share} />
-      <p className="text-2xl">
+      <p className="text-2xl leading-none">
         <span className="text-xl">$</span>
-        {share.value.toFixed(2)}
+        {share.value.toFixed(1)}
       </p>
 
       {share.handler !== "mine" && (
-        <p className="text-[0.6rem] z-20 text-green-200 bottom-3 right-3 absolute">
+        <p className="text-[0.6rem] z-20 text-green-200 bottom-[0.9rem] right-3 absolute">
           {share.percentage * 100}%
         </p>
       )}
