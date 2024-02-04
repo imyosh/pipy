@@ -27,4 +27,5 @@ export type ValueShareType = {
   value: number;
   handler: InvistorHandler;
   recentInvistorBaseBalance?: number;
+  percentage: number;
 };

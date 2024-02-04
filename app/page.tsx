@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <main className="flex flex-1 flex-col gap-6">
       <Suspense fallback={<PortfolioCardsSkeleton />}>
-        <PortfolioCards session={session} />
+        <PortfolioCards />
       </Suspense>
       <div className="mx-auto h-[1px] w-1/2 bg-secondary" />
       <Suspense fallback={<RecentPositions.Skeleton />}>

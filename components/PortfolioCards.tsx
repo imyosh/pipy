@@ -1,9 +1,8 @@
 import ValueShare from "./ValueShare";
 import { Skeleton } from "@/components/ui/skeleton";
 import { apiGetUserPortfolio } from "@/lib/api";
-import { User } from "next-auth";
 
-export default async function PortfolioCards({ session }: { session: User }) {
+export default async function PortfolioCards() {
   const portfolio = await apiGetUserPortfolio();
 
   return (
@@ -19,7 +18,12 @@ export default async function PortfolioCards({ session }: { session: User }) {
       </div>
       {/* <div className='w-full h-28 border-t-2 border-primary bg-gradient-to-b from-[#1B2943] to-background'></div> */}
       <ValueShare
-        share={{ title: "mine", value: portfolio?.mine || 0, handler: "mine" }}
+        share={{
+          title: "mine",
+          value: portfolio?.mine || 0,
+          handler: "mine",
+          percentage: 1,
+        }}
       />
 
       <div className="flex w-full gap-2">
@@ -29,6 +33,7 @@ export default async function PortfolioCards({ session }: { session: User }) {
             value: portfolio?.invistor1 || 0,
             handler: "invistor1",
             recentInvistorBaseBalance: portfolio["invistor1-basebalance"],
+            percentage: 0.2,
           }}
         />
         <ValueShare
@@ -37,6 +42,7 @@ export default async function PortfolioCards({ session }: { session: User }) {
             value: portfolio?.invistor2 || 0,
             handler: "invistor2",
             recentInvistorBaseBalance: portfolio["invistor2-basebalance"],
+            percentage: 0.5,
           }}
         />
       </div>

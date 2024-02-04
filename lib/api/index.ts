@@ -105,12 +105,13 @@ export async function apiClearPositionsHistory() {
 
 export async function apiTransferPercentage(
   baseBalance: number,
-  handler: InvistorHandler
+  handler: InvistorHandler,
+  percentage: number
 ) {
   const session = await getUserSession();
   const portfolio = await getUserPortfolio(session.id);
 
-  const transferable1 = (portfolio[handler] - baseBalance) * 0.2;
+  const transferable1 = (portfolio[handler] - baseBalance) * percentage;
 
   await updateUserTargetPortfolioByPosition(session.id, {
     value: transferable1,

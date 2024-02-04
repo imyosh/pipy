@@ -45,13 +45,17 @@ export default function TransferPercentageDialog({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      //   value: "",
+      // value: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     startTransition(async () => {
-      await apiTransferPercentage(data.value, target.handler);
+      await apiTransferPercentage(
+        data.value,
+        target.handler,
+        target.percentage
+      );
       setOpen(false);
     });
   }
@@ -87,8 +91,8 @@ export default function TransferPercentageDialog({
           <AlertDialogTitle className="w-max">Are you sure? </AlertDialogTitle>
           <AlertDialogDescription className="text-start">
             This action cannot be undone. This will Transfer{" "}
-            <span className="text-green-400">20%</span> to your balance from{" "}
-            {target.title}!
+            <span className="text-green-400">{target.percentage * 100}%</span>{" "}
+            to your balance from {target.title}!
           </AlertDialogDescription>
         </AlertDialogHeader>
 
