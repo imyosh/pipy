@@ -75,7 +75,7 @@ export const getUserPositions = async (userId: string) => {
 
 export const getUserRecentPositions = async (userId: string) => {
   const positionsRef = collection(db, "users", userId, "positions");
-  const q = query(positionsRef, orderBy("timestamp"), limitToLast(2));
+  const q = query(positionsRef, orderBy("timestamp"), limitToLast(1));
   const userPositions = await getDocs(q);
   return userPositions.docs
     .map((doc) => ({

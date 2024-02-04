@@ -8,7 +8,7 @@ export default async function RecentPositions() {
   return (
     <section className="flex flex-grow flex-col gap-6">
       <div className="flex items-center justify-between">
-        <h1>Posistions</h1>
+        <h1>Last Posistion</h1>
       </div>
       <div className="flex-grow flex relative flex-col gap-4">
         {positions?.length !== 0 ? (
@@ -33,7 +33,6 @@ RecentPositions.Skeleton = function RecentPositionsSkeleton() {
       </div>
       <div className="flex-grow flex relative flex-col gap-4">
         <Skeleton className="h-[48px]" />
-        <Skeleton className="h-[48px] delay-150" />
       </div>
     </section>
   );
