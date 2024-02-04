@@ -69,7 +69,7 @@ export default function ValueShareOptions({
     <>
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="placer" className="absolute right-3 top-1">
+          <Button variant="placer" className="absolute right-1.5 top-1">
             <OptionsIcon className="hover:fill-primary-2 fill-secondary-foreground" />
           </Button>
         </DropdownMenuTrigger>
