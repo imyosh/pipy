@@ -13,7 +13,7 @@ export default async function PortfolioCards() {
         </h2>
         <p className="text-5xl">
           <span className="text-2xl">$</span>
-          {((portfolio?.mine || 0) + (portfolio?.invistor1 || 0)).toFixed(1)}
+          {((portfolio?.mine || 0) + (portfolio?.invistor1 || 0)).toFixed(2)}
         </p>
       </div>
       {/* <div className='w-full h-28 border-t-2 border-primary bg-gradient-to-b from-[#1B2943] to-background'></div> */}
