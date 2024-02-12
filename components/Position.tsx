@@ -14,7 +14,7 @@ export default function Position({ position }: { position: IdPosition }) {
   return (
     <SwipeToRevealActions
       hideDotsButton
-      height="48px"
+      height="50px"
       actionButtons={[
         {
           content: (
@@ -29,7 +29,7 @@ export default function Position({ position }: { position: IdPosition }) {
       ]}
       actionButtonMinWidth={70}
     >
-      <div className="flex flex-1 items-center justify-between">
+      <div className="flex flex-1 pb-[1px] items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="grid h-12 w-12 place-content-center rounded-lg bg-secondary">
             {position.value > 0 ? (

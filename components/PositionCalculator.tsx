@@ -28,6 +28,7 @@ export default function PositionCalculator({ capital }: { capital: number }) {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setResult((capital * (data.percentage / 100)) / (data.pips * 10));
+    form.reset(data);
   }
 
   return (
@@ -78,7 +79,11 @@ export default function PositionCalculator({ capital }: { capital: number }) {
           <Separator className="mt-4" />
         </div>
 
-        <Button type="submit" className="h-10 w-full font-bold">
+        <Button
+          disabled={!form.formState.isDirty}
+          type="submit"
+          className="h-10 w-full font-bold"
+        >
           Calculator
         </Button>
       </form>
