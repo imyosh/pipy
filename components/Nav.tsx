@@ -5,8 +5,8 @@ import Link from "next/link";
 
 import AddIcon from "@/public/svg/add.svg";
 import DashboardIcon from "@/public/svg/dashboard.svg";
-import StatsIcon from "@/public/svg/stats.svg";
 import ListIcon from "@/public/svg/list.svg";
+import CalculatorIcon from "@/public/svg/calculator.svg";
 import AddPositionSheet from "@/components/AddPositionSheet";
 import { usePathname } from "next/navigation";
 
@@ -20,7 +20,13 @@ export default function Nav() {
       <Link href="/" className="group cursor-pointer">
         <DashboardIcon
           data-active={pathName === "/"}
-          className="h-5 w-5 fill-[#737373] data-[active=true]:fill-primary"
+          className="size-6 fill-[#737373] data-[active=true]:fill-primary"
+        />
+      </Link>
+      <Link href="/positions" className="group cursor-pointer">
+        <ListIcon
+          data-active={pathName === "/positions"}
+          className="size-5 stroke-[#737373]  data-[active=true]:stroke-primary"
         />
       </Link>
       <AddPositionSheet>
@@ -31,7 +37,13 @@ export default function Nav() {
       <Link href="/positions" className="group cursor-pointer">
         <ListIcon
           data-active={pathName === "/positions"}
-          className="h-5 w-5 stroke-[#737373]  data-[active=true]:stroke-primary"
+          className="size-5 stroke-[#737373]  data-[active=true]:stroke-primary"
+        />
+      </Link>
+      <Link href="/calc" className="group cursor-pointer">
+        <CalculatorIcon
+          data-active={pathName === "/calc"}
+          className="size-[1.3rem] fill-[#737373]  data-[active=true]:fill-primary"
         />
       </Link>
     </nav>

@@ -21,9 +21,11 @@ import {
 
 import { revalidatePath } from "next/cache";
 import { getUserSession } from "../session";
+import { redirect } from "next/navigation";
 
 export async function apiGetUserPortfolio() {
   const session = await getUserSession();
+  if (!session) redirect("/login");
   return (await getUserPortfolio(session.id)) as Portfolio;
 }
 
@@ -35,6 +37,7 @@ export async function apiUpdateUserPortfolio(target: string, value: number) {
 
 export async function apiGetUserPositions() {
   const session = await getUserSession();
+  if (!session) redirect("/login");
   return getUserPositions(session.id);
 }
 
