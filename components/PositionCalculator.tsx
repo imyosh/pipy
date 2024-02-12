@@ -84,7 +84,7 @@ export default function PositionCalculator({ capital }: { capital: number }) {
           type="submit"
           className="h-10 w-full font-bold"
         >
-          Calculator
+          Calculate
         </Button>
       </form>
     </Form>
