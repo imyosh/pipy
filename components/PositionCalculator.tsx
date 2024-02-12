@@ -59,7 +59,7 @@ export default function PositionCalculator({ capital }: { capital: number }) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="number" placeholder="PIPS" {...field} />
+                <Input type="number" placeholder="Pips" {...field} />
               </FormControl>
             </FormItem>
           )}
