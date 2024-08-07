@@ -12,8 +12,8 @@ import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 
 const FormSchema = z.object({
-  percentage: z.coerce.number().min(1).max(100),
-  pips: z.coerce.number().min(1),
+  percentage: z.coerce.number().min(0.1).max(100),
+  pips: z.coerce.number().min(0.1),
 });
 
 export default function PositionCalculator({ capital }: { capital: number }) {
