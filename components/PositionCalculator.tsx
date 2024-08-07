@@ -22,7 +22,7 @@ export default function PositionCalculator({ capital }: { capital: number }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      percentage: 2,
+      percentage: 1,
     },
   });
 
